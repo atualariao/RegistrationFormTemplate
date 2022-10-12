@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import type { NextComponentType, NextPageContext } from "next";
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 
 //Object data types
 type SignUpFormValues = {
@@ -31,8 +32,8 @@ type SubmitButton = {
 
 //Regex for password and mobile number validation
 const specialCharas = /^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])(?=.*?[0-9])[A-Za-zd@$!%*#?&0-9]/
-const philPhone = /^(09|\+639)\d{9}$/
 const theme = createTheme();
+const philPhone = /^(09|\+639)\d{9}$/ // PH phone regex
 const SignupForm: NextComponentType<NextPageContext, {}, SubmitButton> = (props: SubmitButton,) => {
 
     //Initial values
@@ -66,7 +67,7 @@ const SignupForm: NextComponentType<NextPageContext, {}, SubmitButton> = (props:
             .string()
             .email('Must be a valid email')
             .required('Email is required'),
-        mobilenum: yup.string().matches(philPhone, "Please enter a valid Phone number from Philippines").required('Mobile Number is required'),
+        mobilenum: yup.string().strict(false).trim().matches(philPhone, 'Mobile Number is invalid').required('Mobile Number is required'),
         username: yup.string().trim().required('Username is required').min(4).max(10),
         password: yup.string().required().min(6).max(15).matches(specialCharas, "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
         confirmPassword: yup.string()
@@ -157,19 +158,24 @@ const SignupForm: NextComponentType<NextPageContext, {}, SubmitButton> = (props:
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <MuiPhoneNumber
+              name="mobilenum"
+              value={formik.values.mobilenum}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange('mobilenum')}
+              id="mobilenum"
+              autoFormat={false}
+              onlyCountries={['ph']}
+              defaultCountry='ph'
+              countryCodeEditable={false}
+              regions={'asia'}
               required
               fullWidth
-              id="mobilenum"
               label="Mobile Number"
-              name="mobilenum"
               autoComplete="mobile num"
               helperText={formik.errors.mobilenum && formik.touched.mobilenum ? formik.errors.mobilenum : null}
-              value={formik.values.mobilenum}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               error={formik.touched.mobilenum && !!formik.errors.mobilenum}
-            />
+            /> 
           </Grid>
           <Grid item xs={12}>
             <hr></hr>
