@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import SignupForm from "./components/SignUpForm";
+import SignupForm from "../components/SignUpForm";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
