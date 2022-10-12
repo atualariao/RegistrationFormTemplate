@@ -7,7 +7,7 @@ Sample Preview (Click on the image to visit sample):
 
 ## Getting Started
 
-Dependencies Installations:
+Dependencies Installatios:
 
 ```bash
 # mui
