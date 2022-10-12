@@ -39,5 +39,3 @@ npm i -S yup
 # Creating new project in typescript
 npx create-next-app@latest --ts
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
