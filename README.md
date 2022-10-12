@@ -1,6 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Sample: [`https://https-github-com-atualariao-registration-form-template.vercel.app/`](https://https-github-com-atualariao-registration-form-template.vercel.app/)
+Sample Preview: [<img alt="alt_text" width="40px" src="https://ibb.co/9ypq1W0" />](https://https-github-com-atualariao-registration-form-templa-jmzlpgpa5.vercel.app/)
+
 
 ## Getting Started
 
