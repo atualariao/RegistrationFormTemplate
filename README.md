@@ -7,14 +7,6 @@ Sample Preview (Click on the image to visit sample):
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
 Dependencies Installations:
 
 ```bash
@@ -38,4 +30,18 @@ npm i -S yup
 ```bash
 # Creating new project in typescript
 npx create-next-app@latest --ts
+```
+
+Running Locally:
+
+```bash
+npm run dev
+# or
+yarn dev
+# for test building
+npm run build
+npm run start
+# or
+yarn build
+yarn start
 ```
