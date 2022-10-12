@@ -19,7 +19,7 @@ npm install react-hook-form
 ```
 
 ```bash
-# formik &yYup
+# formik &yup
 npm i formik-yup# muiphonenumber
 # only formik
 npm add formik
