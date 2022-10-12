@@ -22,7 +22,7 @@ const SignupForm = () => {
         <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 2, mb: 2}}>
             <Box
           sx={{
-            marginTop: 1,
+            marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

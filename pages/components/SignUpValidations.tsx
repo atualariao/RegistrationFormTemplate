@@ -3,6 +3,8 @@ import MuiPhoneNumber from 'material-ui-phone-number-2';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import TextField from '@mui/material/TextField';
+import { InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React from 'react';
 import { initialValues } from './InitialVals';
 import { SubmitButton } from './ObjectTypes';
@@ -10,8 +12,20 @@ import type { NextComponentType, NextPageContext } from "next";
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useState } from 'react';
+
 
 const SignUpValidations: NextComponentType<NextPageContext, {}, SubmitButton> = (props: SubmitButton,) => {
+
+//Show Password
+const [showPassword, setShowPassword] = useState(false);
+const handleClickShowPassword = () => setShowPassword(!showPassword);
+const handleMouseDownPassword = () => setShowPassword(!showPassword);
+//Confirm Password
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
 //Formik use
 const formik = useFormik({
     initialValues: initialValues,
@@ -149,7 +163,7 @@ validationSchema: yup.object({
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="new-password"
               helperText={formik.errors.password && formik.touched.password ? formik.errors.password : null}
@@ -158,6 +172,19 @@ validationSchema: yup.object({
               onBlur={formik.handleBlur}
               error={formik.touched.password && !!formik.errors.password}
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -166,7 +193,7 @@ validationSchema: yup.object({
               fullWidth
               name="confirmPassword"
               label="Confirm Password"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
               autoComplete="confirm-password"
               helperText={formik.errors.confirmPassword && formik.touched.confirmPassword ? formik.errors.confirmPassword : null}
@@ -175,6 +202,20 @@ validationSchema: yup.object({
               onBlur={formik.handleBlur}
               error={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
               size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle confirmPassword visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownConfirmPassword}
+                    >
+                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+              
             />
             </Grid>
           </Grid>
