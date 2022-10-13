@@ -1,18 +1,23 @@
-import { specialCharas, philPhone } from './Regex';
-import MuiPhoneNumber from 'material-ui-phone-number-2';
+//object types, initialvalues, and regex imports
+import { specialCharas, philPhone } from '../utils/Regex';
+import { SubmitButton } from '../utils/ObjectTypes';
+import { initialValues } from '../utils/InitialVals';
+
+//formik, yup, and react imports
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import React from 'react';
+import { useState } from 'react';
+import type { NextComponentType, NextPageContext } from "next";
+
+//mui imports
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import TextField from '@mui/material/TextField';
 import { InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import React from 'react';
-import { initialValues } from './InitialVals';
-import { SubmitButton } from './ObjectTypes';
-import type { NextComponentType, NextPageContext } from "next";
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
 
 
 const SignUpValidations: NextComponentType<NextPageContext, {}, SubmitButton> = (props: SubmitButton,) => {
