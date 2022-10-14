@@ -8,7 +8,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import React from 'react';
 import { useState } from 'react';
-import type { NextComponentType, NextPageContext } from "next";
 
 //mui imports
 import MuiPhoneNumber from 'material-ui-phone-number-2';
@@ -20,7 +19,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 
-const SignUpValidations: NextComponentType<NextPageContext, {}, SubmitButton> = (props: SubmitButton,) => {
+const SignUpValidations = (props: SubmitButton) => {
 
 //Show Password
 const [showPassword, setShowPassword] = useState(false);
@@ -203,7 +202,7 @@ validationSchema: yup.object({
               autoComplete="confirm-password"
               helperText={formik.errors.confirmPassword && formik.touched.confirmPassword ? formik.errors.confirmPassword : null}
               value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
+              onChange={formik.handleChange} 
               onBlur={formik.handleBlur}
               error={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
               size="small"

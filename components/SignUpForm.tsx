@@ -11,13 +11,11 @@ import Container from '@mui/material/Container';
 import { Alert, IconButton, Collapse } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-
 const SignupForm = () => {
   const [message, setMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [open, setOpen] = useState(true);
 
-    
   return (
     //Input field
     <div>

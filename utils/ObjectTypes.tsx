@@ -1,4 +1,3 @@
-
 //Object data types
 export type SignUpFormValues = {
     firstName: string,
