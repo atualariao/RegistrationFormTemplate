@@ -3,9 +3,8 @@ import axios from 'axios';
 import nookies from 'nookies';
 import { GetServerSideProps } from 'next';
 
-const ProfilePage = ({user}) => {
+const ProfilePage = ({users}) => {
   const router = useRouter();
-  const { firstName, middleName, lastName, mobilenum, email, username }  = user;
 
   const logout = async () => {
     try {
@@ -17,32 +16,31 @@ const ProfilePage = ({user}) => {
   }
 
   return (
-    <div>
-      <div>Username: {username}</div>
-      <div>First Name: {firstName}</div>
-      <div>Middle Name: {middleName}</div>
-      <div>Last Name: {lastName}</div>
-      <div>Mobile Number: {mobilenum}</div>
-      <div>Email: {email}</div>
-      <button onClick={logout}>Logout</button>
-    </div>
+  <div>
+    <h2>User List</h2>
+    <ul>
+      {users.map((per) => (
+        <li key={per.id}>{per.username}</li>
+      ))}
+    </ul>
+  </div>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = nookies.get(ctx)
-  let user = null;
+  let users = null;
 
   if (cookies?.jwt) {
     try {
-      const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData/1`);
-      user = data;
+      const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData`);
+      users = data;
     } catch (e) {
       console.log(e);
     }
   }
 
-  if (!user) {
+  if (!users) {
     return {
       redirect: {
         permanent: false,
@@ -53,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      user
+      users
     }
   }
 }
