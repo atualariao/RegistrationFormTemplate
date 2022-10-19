@@ -1,63 +1,71 @@
+import { NextPage } from "next";
 //object types, initialvalues, and regex imports
-import { specialCharas, philPhone } from '../utils/Regex';
-import { SubmitButton } from '../utils/ObjectTypes';
-import { initialValues } from '../utils/InitialVals';
-
+import { SignUpFormValues, initialValues } from '../utils/ObjectTypes';
+import { validationRegisterSchema } from '../components/YupSchema';
 //formik, yup, and react imports
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import React from 'react';
 import { useState } from 'react';
-
 //mui imports
 import MuiPhoneNumber from 'material-ui-phone-number-2';
 import TextField from '@mui/material/TextField';
-import { InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { InputAdornment, Alert, Collapse, IconButton, Box, Container, Typography } from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { useRouter } from "next/router";
+import axios from 'axios';
 
-
-const SignUpValidations = (props: SubmitButton) => {
-
-//Show Password
-const [showPassword, setShowPassword] = useState(false);
-const handleClickShowPassword = () => setShowPassword(!showPassword);
-const handleMouseDownPassword = () => setShowPassword(!showPassword);
-//Confirm Password
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-
-//Formik use
-const formik = useFormik({
-    initialValues: initialValues,
-    onSubmit: values => {
-      props.setSubmitted(true),
-      props.setMessage("Submitted"),
-      props.setOpen(true)
-      console.log(values) //Data from Form submitted as Object
-    },
-
-//Validation
-validationSchema: yup.object({
-    firstName: yup.string().trim().required('First Name is required'),
-    middleName: yup.string(),
-    lastName: yup.string().trim().required('Last Name is required'),
-    email: yup
-        .string()
-        .email('Must be a valid email')
-        .required('Email is required'),
-    mobilenum: yup.string().strict(false).trim().matches(philPhone, 'Mobile Number is invalid').required('Mobile Number is required'),
-    username: yup.string().trim().required('Username is required').min(4).max(10),
-    password: yup.string().required().min(6).max(15).matches(specialCharas, "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
-    confirmPassword: yup.string()
-    .oneOf([yup.ref('password'), null], 'Password does not match'),
-    }),
-});
-    return (
-<Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 2}}>
+const RegisterComponent: NextPage = () => {    
+    //onSubmit button
+    const [message, setMessage] = useState('');
+    const [submitted, setSubmitted] = useState(false);
+    const [open, setOpen] = useState(true);
+    //Show Password
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    //Show Confirm Password
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    //Router
+    const router = useRouter()
+    //formik hook
+    const formik = useFormik<SignUpFormValues>({
+        initialValues:  initialValues,
+        onSubmit: async (values) => {
+        setMessage('Registered successfully, please continue to login');
+        setSubmitted(true);
+        setOpen(true);
+        try {
+            axios.post('https://634ccfadf5d2cc648e950444.mockapi.io/userData', values);
+        } catch (err) {
+            console.log(err.response.data)
+        }
+        //wait a few seconds before redirecting using pre-loader
+        router.replace('/Login')
+      },
+    //Validation
+    validationSchema: validationRegisterSchema
+    });
+    
+  return ( 
+    <div>
+            <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 10, mb: 10}}>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+          > 
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+        {submitted && <Collapse in={open}><Alert action={<IconButton aria-label="close" color="inherit" size="small" 
+        onClick={() => {setOpen(false)}}><Close fontSize="inherit" /></IconButton>}>{message}</Alert></Collapse>}
+        <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 2}}>
           <Grid container spacing={2}>
               <Grid item xs={12}>
               <TextField
@@ -69,9 +77,7 @@ validationSchema: yup.object({
               label="First Name"
               error={formik.touched.firstName && !formik.values.firstName}
               helperText={formik.errors.firstName && formik.touched.firstName ? formik.errors.firstName : null}
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              {...formik.getFieldProps('firstName')}
               size="small"
             />
           </Grid>
@@ -83,8 +89,7 @@ validationSchema: yup.object({
               id="middleName"
               label="Middle Name"
               autoFocus
-              value={formik.values.middleName}
-              onChange={formik.handleChange}
+              {...formik.getFieldProps('middleName')}
               size="small"
             />
           </Grid>
@@ -97,9 +102,7 @@ validationSchema: yup.object({
               name="lastName"
               autoComplete="family-name"
               helperText={formik.errors.lastName && formik.touched.lastName ? formik.errors.lastName : null}
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              {...formik.getFieldProps('lastName')}
               error={formik.touched.lastName && !formik.values.lastName}
               size="small"
             />
@@ -115,10 +118,8 @@ validationSchema: yup.object({
               label="Email Address"
               name="email"
               autoComplete="email"
-              helperText={formik.errors.email && formik.touched.email ? formik.errors.email : null}
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              helperText={(formik.errors.email && formik.touched.email) && formik.errors.email}
+              {...formik.getFieldProps('email')}
               error={formik.touched.email && !!formik.errors.email}
               size="small"
             />
@@ -128,7 +129,7 @@ validationSchema: yup.object({
               name="mobilenum"
               value={formik.values.mobilenum}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange('mobilenum')}
+              onChange={formik.handleChange('mobilenum')}            
               id="mobilenum"
               autoFormat={false}
               onlyCountries={['ph']}
@@ -139,7 +140,7 @@ validationSchema: yup.object({
               fullWidth
               label="Mobile Number"
               autoComplete="mobile num"
-              helperText={formik.errors.mobilenum && formik.touched.mobilenum ? formik.errors.mobilenum : null}
+              helperText={(formik.errors.mobilenum && formik.touched.mobilenum) && formik.errors.mobilenum}
               error={formik.touched.mobilenum && !!formik.errors.mobilenum}
               variant="outlined"
               size="small"
@@ -153,10 +154,8 @@ validationSchema: yup.object({
               label="Username"
               name="username"
               autoComplete="username"
-              helperText={formik.errors.username && formik.touched.username ? formik.errors.username : null}
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              helperText={(formik.errors.username && formik.touched.username) && formik.errors.username}
+              {...formik.getFieldProps('username')}
               error={formik.touched.username && !!formik.errors.username}
               size="small"
             />
@@ -170,10 +169,8 @@ validationSchema: yup.object({
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="new-password"
-              helperText={formik.errors.password && formik.touched.password ? formik.errors.password : null}
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              helperText={(formik.errors.password && formik.touched.password) && formik.errors.password}
+              {...formik.getFieldProps('password')}
               error={formik.touched.password && !!formik.errors.password}
               size="small"
               InputProps={{
@@ -182,7 +179,6 @@ validationSchema: yup.object({
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
@@ -201,9 +197,7 @@ validationSchema: yup.object({
               id="confirmPassword"
               autoComplete="confirm-password"
               helperText={formik.errors.confirmPassword && formik.touched.confirmPassword ? formik.errors.confirmPassword : null}
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange} 
-              onBlur={formik.handleBlur}
+              {...formik.getFieldProps('confirmPassword')}
               error={formik.touched.confirmPassword && !!formik.errors.confirmPassword}
               size="small"
               InputProps={{
@@ -212,27 +206,27 @@ validationSchema: yup.object({
                     <IconButton
                       aria-label="toggle confirmPassword visibility"
                       onClick={handleClickShowConfirmPassword}
-                      onMouseDown={handleMouseDownConfirmPassword}
                     >
                       {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 )
               }}
-              
             />
             </Grid>
-          </Grid>
-          <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+        </Grid>
+        <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
         >
           Sign Up
         </Button>
-          </Box>
-    );
-};
+      </Box>
+      </Box>
+      </Container>
+    </div>
+)}
 
-export default SignUpValidations;
+export default RegisterComponent

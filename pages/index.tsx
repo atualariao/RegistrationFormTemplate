@@ -1,12 +1,12 @@
 import { NextPage } from "next";
-import SignupForm from "../components/SignUpForm";
+import HomePage from "./HomePage";
 
-const Home: NextPage = () => {    
- 
+const Home: NextPage = () => {   
+
   return (
-    <>
-      <SignupForm />
-    </>
+    <div>         
+      <HomePage />
+    </div>
   )
 }
 
