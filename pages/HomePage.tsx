@@ -5,7 +5,7 @@ import axios from 'axios';
 import nookies from 'nookies';
 import { GetServerSideProps } from 'next';
 
-const HomePage = (props) => {
+const HomePage = ({users}) => {
     const router = useRouter();
     //logout user
     const Logout = async () => {
@@ -17,10 +17,10 @@ const HomePage = (props) => {
         }
       }
 
-    if (props.user) {
+    if (users) {
         return (
             <div>
-                <h2>Welcome back, {props.user?.username || 'Guest'}!</h2>
+                <h2>Welcome back, {users?.username || 'Guest'}!</h2>
                 <nav>
                     <ul>
                         <li><button onClick={Logout} >Logout</button></li>
@@ -52,20 +52,29 @@ const HomePage = (props) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cookies = nookies.get(ctx)
-    let user = null;
+    let users = null;
     
     if (cookies?.jwt) {
       try {
         const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData/1`); //Make dynamic userId
-        user = data;
+        users = data;
       } catch (e) {
         console.log(e);
       }
     }
 
+    if (!users && !cookies) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      }
+    }
+
     return {
       props: {
-        user
+        users
       }
     }
   }

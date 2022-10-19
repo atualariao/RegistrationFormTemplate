@@ -4,15 +4,13 @@ import { LoginValues } from "../utils/ObjectTypes";
 import * as yup from 'yup';
 //formik, yup, and react imports
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 //mui imports
 import TextField from '@mui/material/TextField';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { InputAdornment, IconButton, Box, Container, Typography, Collapse, Alert } from "@mui/material";
-import { Close } from "@mui/icons-material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from 'axios';

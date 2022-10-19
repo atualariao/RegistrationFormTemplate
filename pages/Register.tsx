@@ -29,11 +29,11 @@ export const getServerSideProps = async (ctx) => {
       }
     }
   
-    if (user) {
+    if (user && cookies) {
       return {
         redirect: {
           permanent: false,
-          destination: '/Profile'
+          destination: '/HomePage'
         }
       }
     }

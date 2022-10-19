@@ -1,26 +1,15 @@
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import nookies from 'nookies';
 import { GetServerSideProps } from 'next';
 
 const ProfilePage = ({users}) => {
-  const router = useRouter();
-
-  const logout = async () => {
-    try {
-      await axios.get('/api/logout');
-      router.push('/');
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   return (
   <div>
     <h2>User List</h2>
     <ul>
       {users.map((per) => (
-        <li key={per.id}>{per.username}</li>
+        <a href={`/Profile/${per.id}`}><li key={per.id}>{per.username}</li></a>
       ))}
     </ul>
   </div>
@@ -40,11 +29,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  if (!users) {
+  if (!users && !cookies) {
     return {
       redirect: {
         permanent: false,
-        destination: '/Login'
+        destination: '/'
       }
     }
   }

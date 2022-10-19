@@ -5,7 +5,7 @@ const Home: NextPage = () => {
 
   return (
     <div>         
-      <HomePage />
+      <HomePage users={undefined} />
     </div>
   )
 }
