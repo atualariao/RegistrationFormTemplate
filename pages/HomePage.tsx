@@ -24,9 +24,6 @@ const HomePage = ({users}) => {
                 <nav>
                     <ul>
                         <li><button onClick={Logout} >Logout</button></li>
-                        {/* <li><Link href={{
-                          pathname: `/Profile/${props.user.id}`,
-                        }}>Profile</Link></li> */}
                         <li><Link href={'/Profile'}>Profile</Link></li>
                         <li><Link href={'/Contact'}>Contact</Link></li>
                     </ul>
@@ -56,18 +53,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     
     if (cookies?.jwt) {
       try {
-        const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData/1`); //Make dynamic userId
+        const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData`); //Make dynamic userId
         users = data;
       } catch (e) {
         console.log(e);
       }
     }
 
-    if (!users && !cookies) {
+    if (users && cookies) {
       return {
         redirect: {
           permanent: false,
-          destination: '/'
+          destination: '/Profile'
         }
       }
     }

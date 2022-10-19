@@ -8,7 +8,7 @@ const ProfilePage = ({users}) => {
   <div>
     <h2>User List</h2>
     <ul>
-      {users.map((per) => (
+      {users?.map((per) => (
         <a href={`/Profile/${per.id}`}><li key={per.id}>{per.username}</li></a>
       ))}
     </ul>
@@ -29,11 +29,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
-  if (!users && !cookies) {
+  if (!users || !cookies) {
     return {
       redirect: {
         permanent: false,
-        destination: '/'
+        destination: '/HomePage'
       }
     }
   }

@@ -8,7 +8,7 @@ const userId = ({users, userId}) => {
         <>
             <h1>User with the id {userId}</h1>
                 {
-                    users.map((user) => (
+                    users?.map((user) => (
                         <div key={user.id}>
                             <h2>
                             {user.id} {user.username}
@@ -39,7 +39,7 @@ export const  getServerSideProps: GetServerSideProps = async (ctx) => {
         }
       }
 
-      if (!users && !cookies) {
+      if (!users || !cookies) {
         return {
           redirect: {
             permanent: false,
