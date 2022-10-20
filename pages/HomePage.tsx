@@ -49,29 +49,20 @@ const HomePage = ({users}) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const cookies = nookies.get(ctx)
+
     let users = null;
-    
     if (cookies?.jwt) {
       try {
-        const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData`); //Make dynamic userId
+        const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData/1`); //Make dynamic userId
         users = data;
       } catch (e) {
         console.log(e);
       }
     }
 
-    if (users && cookies) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/Profile'
-        }
-      }
-    }
-
     return {
       props: {
-        users
+        users,
       }
     }
   }

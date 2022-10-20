@@ -1,17 +1,18 @@
 import axios from 'axios';
 import nookies from 'nookies';
 import { GetServerSideProps } from 'next';
+import { User } from '../../utils/ObjectTypes';
 
-const ProfilePage = ({users}) => {
+const ProfilePage = (users:User) => {
 
   return (
   <div>
     <h2>User List</h2>
-    <ul>
       {users?.map((per) => (
-        <a href={`/Profile/${per.id}`}><li key={per.id}>{per.username}</li></a>
+        <div>
+            <a href={`/Profile/${per.id}`} key={per.id}>{per.username}</a>
+        </div>
       ))}
-    </ul>
   </div>
   )
 }

@@ -11,6 +11,17 @@ export type SignUpFormValues = {
     confirmPassword: string,
 }
 
+export type User = {
+  firstName: string,
+  middleName: string,
+  lastName: string,
+  email: string,
+  mobilenum: string,
+  username: string,
+  password: string,
+  confirmPassword: string,
+}
+
 export const initialValues = {
   firstName: '',
   middleName: '',

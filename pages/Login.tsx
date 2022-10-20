@@ -24,7 +24,7 @@ export const getServerSideProps = async (ctx) => {
       }
     }
   
-    if (user && cookies) {
+    if (!user && !cookies) {
       return {
         redirect: {
           permanent: false,
