@@ -2,24 +2,42 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import nookies from 'nookies';
+import NavComponent from '../../components/NavComponent';
+import { Typography, Container, Box, Link } from '@mui/material';
 
 const userId = ({users, userId}) => {
     return (
         <>
-            <h1>User number: {userId}</h1>
-                {
+        <NavComponent />
+          <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 25, mb: 25}}>
+            <Box
+                sx={{
+                    marginTop: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+                >
+                <Typography component="h1" variant="h5" sx={{mb: 2}}>
+                User number: {userId}
+                </Typography>
+                <Typography component="h1" variant="h6" sx={{mb: 2}}>
+                  {
                     users?.map((user) => (
-                        <div key={user.id}>
-                            <h3>Username: <b>{user.username}</b></h3>
-                            <p>First Name: <b>{user.firstName}</b></p>
-                            <p>Middle Name: <b>{user.middleName || 'N/A'} </b></p>
-                            <p>Last Name: <b>{user.lastName}</b></p>
-                            <p>Email: <b>{user.email}</b></p>
-                            <p>Contact: <b>{user.mobilenum}</b></p>
-                            <hr />
-                        </div>
+                      <div key={user.id}>
+                          <h3>Username: <b>{user.username}</b></h3>
+                          <p>First Name: <b>{user.firstName}</b></p>
+                          <p>Middle Name: <b>{user.middleName || 'N/A'} </b></p>
+                          <p>Last Name: <b>{user.lastName}</b></p>
+                          <p>Email: <b>{user.email}</b></p>
+                          <p>Contact: <b>{user.mobilenum}</b></p>
+                          <hr />
+                      </div>
                     ))
-                }
+                  }
+                </Typography>
+            </Box>
+            </Container>
         </>
     );
 };
@@ -30,7 +48,7 @@ export const  getServerSideProps: GetServerSideProps = async (ctx) => {
     const { userId } = params
 
     let users = null;
-    if (cookies?.jwt) {
+    if (cookies?.UserJWT) {
         try {
           const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData?id=${userId}`);
           users = data;
@@ -39,11 +57,11 @@ export const  getServerSideProps: GetServerSideProps = async (ctx) => {
         }
       }
 
-      if (!users || !cookies) {
+      if ((cookies?.LoginStatus === "false" || !cookies?.LoginStatus) || !cookies?.UserJWT) {
         return {
           redirect: {
             permanent: false,
-            destination: '/HomePage'
+            destination: '/Login'
           }
         }
       }

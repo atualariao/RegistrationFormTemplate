@@ -29,15 +29,6 @@ export const getServerSideProps = async (ctx) => {
       }
     }
   
-    if (user && cookies) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/HomePage'
-        }
-      }
-    }
-  
     return {
       props: {}
     }

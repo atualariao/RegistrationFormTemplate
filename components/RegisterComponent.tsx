@@ -11,17 +11,19 @@ import MuiPhoneNumber from 'material-ui-phone-number-2';
 import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import LoadingButton from "@mui/lab/LoadingButton";
 import { InputAdornment, Alert, Collapse, IconButton, Box, Container, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import axios from 'axios';
+import NavComponent from "./NavComponent";
 
 const RegisterComponent: NextPage = () => {    
     //onSubmit button
     const [message, setMessage] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [open, setOpen] = useState(true);
+    const [loading, setLoading] = useState(false);
     //Show Password
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -35,10 +37,11 @@ const RegisterComponent: NextPage = () => {
         initialValues:  initialValues,
         onSubmit: async (values) => {
         setMessage('Registered successfully, please continue to login');
+        setLoading(true)
         setSubmitted(true);
         setOpen(true);
         try {
-            axios.post('https://634ccfadf5d2cc648e950444.mockapi.io/userData', values);
+            await axios.post('https://634ccfadf5d2cc648e950444.mockapi.io/userData', values);
         } catch (err) {
             console.log(err.response.data)
         }
@@ -51,6 +54,7 @@ const RegisterComponent: NextPage = () => {
     
   return ( 
     <div>
+        <NavComponent />
             <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 10, mb: 10}}>
         <Box
           sx={{
@@ -215,14 +219,15 @@ const RegisterComponent: NextPage = () => {
             />
             </Grid>
         </Grid>
-        <Button
+        <LoadingButton
+        loading={loading}
         type="submit"
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
         >
           Sign Up
-        </Button>
+        </LoadingButton>
       </Box>
       </Box>
       </Container>

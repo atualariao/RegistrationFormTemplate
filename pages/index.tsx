@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import LoginPage from "../components/LoginComponent";
+import HomePage from "./HomePage";
 
 const Home: NextPage = () => {   
 
   return (
     <div>         
-      <LoginPage />
+      <HomePage />
     </div>
   )
 }

@@ -1,70 +1,30 @@
 import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import nookies from 'nookies';
-import { GetServerSideProps } from 'next';
+import NavComponent from '../components/NavComponent';
+import { Typography, Container, Box } from '@mui/material';
 
-const HomePage = ({users}) => {
-    const router = useRouter();
-    //logout user
-    const Logout = async () => {
-        try {
-          await axios.get('/api/logout');
-          router.push('/HomePage');
-        } catch (e) {
-          console.log(e);
-        }
-      }
+const HomePage = () => {
 
-    if (users) {
         return (
-            <div>
-                <h2>Welcome back, {users?.username || 'Guest'}!</h2>
-                <nav>
-                    <ul>
-                        <li><button onClick={Logout} >Logout</button></li>
-                        <li><Link href={'/Profile'}>Profile</Link></li>
-                        <li><Link href={'/Contact'}>Contact</Link></li>
-                    </ul>
-                </nav>
-            </div>
+            <>
+                <NavComponent />
+                <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 25, mb: 25}}>
+                    <Box
+                        sx={{
+                            marginTop: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                        >
+                        <Typography component="h1" variant="h5" sx={{mb: 2}}>
+                            Homepage
+                        </Typography>
+                    </Box>
+                </Container>
+
+            </>
         );
-    } else {
-        return (
-            <div>
-                <h2>This is the Home Page</h2>
-                <nav>
-                    <ul>
-                        <li><Link href={'/Login'}>Login</Link></li>
-                        <li><Link href={'/Register'}>Register</Link></li>
-                        <li><Link href={'/Contact'}>Contact</Link></li>
-                    </ul>
-                </nav>
-            </div>
-        )
-    }
 
 };
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const cookies = nookies.get(ctx)
-
-    let users = null;
-    if (cookies?.jwt) {
-      try {
-        const { data } = await axios.get(`https://634ccfadf5d2cc648e950444.mockapi.io/userData/1`); //Make dynamic userId
-        users = data;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    return {
-      props: {
-        users,
-      }
-    }
-  }
 
 export default HomePage;

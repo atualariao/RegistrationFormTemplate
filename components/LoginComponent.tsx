@@ -9,17 +9,19 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { LoadingButton } from "@mui/lab";
 import { InputAdornment, IconButton, Box, Container, Typography, Collapse, Alert } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from 'axios';
+import NavComponent from "./NavComponent";
 
 const LoginPage: NextPage = () => {
     //Message
     const [message, setMessage] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [open, setOpen] = useState(true);
+    const [loading, setLoading] = useState(false);
     //Show Password
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -31,10 +33,10 @@ const LoginPage: NextPage = () => {
             username: '',
             password: '',
         },
-        onSubmit: async (values) => {
+        onSubmit: async (values: LoginValues) => {
             const res = await axios.get('https://634ccfadf5d2cc648e950444.mockapi.io/userData');
             const data = res.data
-            const result = data.filter((user:LoginValues) => {
+            const result = data.filter(user => {
                 if (user.username === values.username && user.password === values.password ) {
                     return user
             }})
@@ -45,7 +47,8 @@ const LoginPage: NextPage = () => {
                 setOpen(true)
             } else {
                 await axios.post('/api/login', values)
-                router.replace('/HomePage')
+                setLoading(true)
+                router.replace('/Profile')
             }
 
         },
@@ -57,6 +60,7 @@ const LoginPage: NextPage = () => {
     
   return ( 
     <div>
+        <NavComponent />
         <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 25, mb: 25}}>
             <Box
             sx={{
@@ -116,14 +120,15 @@ const LoginPage: NextPage = () => {
                     }}
                     />
                 </Grid>
-                <Button
+                <LoadingButton
+                loading={loading}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 1, mb: 1 }}
                 >
                 Sign In
-                </Button>
+                </LoadingButton>
                 <Typography sx={{mb: 2}}>
                     No Account?&nbsp;
                     <Link href={'/Register'}>

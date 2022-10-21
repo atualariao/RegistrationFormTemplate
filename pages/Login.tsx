@@ -13,26 +13,26 @@ const Login = () => {
 
 export const getServerSideProps = async (ctx) => {
     const cookies = nookies.get(ctx)
-    let user = null;
+    let users = null;
   
-    if (cookies?.jwt) {
+    if (cookies?.UserJWT) {
       try {
         const { data } = await axios.get('https://634ccfadf5d2cc648e950444.mockapi.io/userData');
-        user = data;
+        users = data;
       } catch (e) {
         console.log(e);
       }
     }
-  
-    if (!user && !cookies) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/HomePage'
+
+    if (cookies?.UserJWT && cookies?.LoginStatus) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: '/Profile'
+          }
         }
       }
-    }
-  
+
     return {
       props: {}
     }

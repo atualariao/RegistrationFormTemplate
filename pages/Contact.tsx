@@ -1,10 +1,27 @@
 import React from 'react';
+import { Typography, Container, Box } from '@mui/material';
+import NavComponent from '../components/NavComponent';
 
 const Contact = () => {
     return (
-        <div>
-            <h2>This is the Contact Page</h2>
-        </div>
+        <>
+        <NavComponent />
+        <Container component="main" maxWidth="xs" sx={{border: '1px solid grey', mt: 25, mb: 25}}>
+            <Box
+                sx={{
+                    marginTop: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+                >
+                <Typography component="h1" variant="h5" sx={{mb: 2}}>
+                    Contact Page
+                </Typography>
+            </Box>
+        </Container>
+
+    </>
     );
 };
 
