@@ -12,6 +12,7 @@ import DrawerComponent from './DrawerComponent';
 
 const pages = ['HomePage', 'Contact'];
 const NavComponent = () => {
+
     const [value, setValue] = useState(0);
     const router = useRouter()
     const theme = useTheme();

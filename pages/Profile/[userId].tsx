@@ -46,6 +46,7 @@ export const  getServerSideProps: GetServerSideProps = async (ctx) => {
     const cookies = nookies.get(ctx)
     const { params } = ctx
     const { userId } = params
+    console.log(userId)
 
     let users = null;
     if (cookies?.UserJWT) {
