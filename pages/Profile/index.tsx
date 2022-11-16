@@ -8,14 +8,14 @@ import { Typography, Container, Box, Link } from '@mui/material';
 const ProfilePage = ({users}) => {
   const router = useRouter()
 
-  // const Logout = async () => {
-  //   try {
-  //     const user = await axios.get('/api/logout');
-  //     router.push('/Login');
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  const Logout = async () => {
+    try {
+      const user = await axios.get('/api/logout');
+      router.push('/Login');
+    } catch (e) {
+      console.log(e);
+    }
+  }
   
   return (
   <div>
@@ -41,7 +41,7 @@ const ProfilePage = ({users}) => {
                         </Typography>
                     </Box>
                 </Container>
-      {/* <button onClick={Logout}>Logout</button> */}
+      <button onClick={Logout}>Logout</button>
   </div>
   )
 }
